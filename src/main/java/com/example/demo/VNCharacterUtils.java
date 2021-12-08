@@ -2,7 +2,11 @@ package com.example.demo;
 
 import java.util.Arrays;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +21,22 @@ public class VNCharacterUtils {
 	}
 	
 	@GetMapping("/string-character")
-	public String convertCharacterString(@RequestParam("String") String string) {
-		System.out.println(removeAccent(string));
-		return removeAccent(string);
+	public ResponseEntity<String> convertCharacterString(@RequestParam("string") String string) {
+		System.out.println("get "+removeAccent(string));
+//		return removeAccent(string);
+		
+		HttpHeaders headers = new HttpHeaders();
+	    headers.add("String", removeAccent(string));
+		return new ResponseEntity<>(removeAccent(string),headers,HttpStatus.OK);
+	}
+	
+	@PostMapping("/string-character")
+	public ResponseEntity<String> convertCharacterString2(@RequestParam("string") String string) {
+		System.out.println("post "+removeAccent(string));
+		
+		HttpHeaders headers = new HttpHeaders();
+	    headers.add("String", removeAccent(string));
+		return new ResponseEntity<>(removeAccent(string),headers,HttpStatus.OK);
 	}
 
 	private static final char[] SOURCE_CHARACTERS = { 'À', 'Á', 'Â', 'Ã', 'È', 'É', 'Ê', 'Ì', 'Í', 'Ò', 'Ó', 'Ô', 'Õ',
